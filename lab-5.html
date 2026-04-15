@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 5 - Modelling I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="lab-5_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lab-5_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="lab-5_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="lab-5_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="lab-5_files/libs/quarto-html/popper.min.js"></script>
+<script src="lab-5_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="lab-5_files/libs/quarto-html/anchor.min.js"></script>
+<link href="lab-5_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lab-5_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="lab-5_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="lab-5_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="lab-5_files/libs/bootstrap/bootstrap-6a8e6d95bfcd174082ff54166b04dcf7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 5 - Modelling I</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Lab</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this lab you’ll start your practice of statistical modelling. You’ll fit models, interpret model output, and make decisions about your data and research question based on the model results.</p>
+<section id="guidelines" class="level2">
+<h2 class="anchored" data-anchor-id="guidelines">Guidelines</h2>
+<p>Your plots should include an informative title, axes should be labeled, and careful consideration should be given to aesthetic choices.</p>
+<p>In addition, the code should all the code should be be able to be read (not run off the page) when you render to PDF. Make sure that is the case, and add line breaks where the code is running off the page.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Render your document. If your code is running off the page for a given question such that we can’t see your entire code, we will not evaluate any of the code for that question. The question will automatically receive a 0. This is something you can and should verify before you turn in your work.</p>
+</div>
+</div>
+<p>You should have at least 3 commits with meaningful commit messages by the end of the assignment.</p>
+<p>Additionally, if you’re using functions that are not introduced in the course materials, you must cite your sources.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Failure to cite outside resources used, including Large Language Models like Chat GPT, is a violation of the Duke Community Standard and will be treated as such.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="part-1---smoking-during-pregnancy" class="level1">
+<h1>Part 1 - Smoking during pregnancy</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"openintro"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"broom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.2     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openintro)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: airports
+Loading required package: cherryblossom
+Loading required package: usdata</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>births14_habitgiven <span class="ot">&lt;-</span> births14 <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(habit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="question-1" class="level2">
+<h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
+<p>We are interested in the impact of smoking during pregnancy. Since it is not possible to run a randomized controlled experiment to investigate this impact, we will instead use a data set has been of interest to medical researchers who are studying the relation between habits and practices of expectant mothers and the birth of their children. This is a random sample of 1,000 cases from a data set released in 2014 by the state of North Carolina. The data set is called <code>births14</code>, and it is included in the <strong>openintro</strong> package you loaded at the beginning of the assignment.</p>
+<ol type="a">
+<li>Create a version of the <code>births14</code> data set dropping observations where there are <code>NA</code>s for <code>habit</code>. You can call this version <code>births14_habitgiven</code>.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>births14_habitgiven <span class="ot">&lt;-</span> births14 <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(habit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="a">
+<li>Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions. Create an appropriate plot displaying the relationship between <code>weight</code> and <code>habit</code>. In 2-3 sentences, discuss the relationships observed.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(births14_habitgiven, <span class="fu">aes</span>(<span class="at">x =</span> habit, <span class="at">y =</span> weight)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Baby Birth Weight by Mother's Smoking Habit"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Smoking Habit"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Birth Weight (ounces)"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Now, fit a linear model that predicts <code>weight</code> from <code>habit</code>. Provide the tidy summary output below.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>model_q1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> habit, <span class="at">data =</span> births14_habitgiven)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_q1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic    p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+1 (Intercept)    7.27     0.0435    167.   0         
+2 habitsmoker   -0.593    0.128      -4.65 0.00000382</code></pre>
+</div>
+</div>
+<ol start="4" type="a">
+<li><p>Write the estimated least squares regression line below using proper notation.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you need to type an equation using proper notation, type your answers in-between <code>$$</code> and <code>$$</code>. You may use <code>\hat{example}</code> to put a hat on a character.</p>
+<p>The estimated regression equation is:</p>
+</div>
+</div></li>
+</ol>
+<p><span class="math display">\[
+\hat{weight} = \beta_0 + \beta_1 \cdot habit_{smoker}
+\]</span> <span class="math display">\[
+\hat{weight} = 123.0 - 8.5 \cdot habit_{smoker}
+\]</span> :::</p>
+</section>
+<section id="question-2" class="level2">
+<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<ol type="a">
+<li>Another researcher is interested in assessing the relationship between babies’ weights and mothers’ ages. Fit another linear model to investigate this relationship. Provide the summary output below.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>model_q2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> mage, <span class="at">data =</span> births14)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_q2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic   p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   6.79     0.208       32.7  1.15e-159
+2 mage          0.0142   0.00717      1.99 4.72e-  2</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>In 2-3 sentences, explain how the regression line to model these data is fit, i.e., based on what criteria R determines the regression line.</li>
+</ol>
+<p>Ans: The regression line is fit using the least squares method, which minimizes the sum of squared differences between the observed baby weights and the predicted baby weights from the model. Using this method, R determined the best-fitting line for the data, resulting in an intercept of 6.793 and a slope of 0.0142 for mother’s age. This means the model is the line that best reduces overall prediction error based on the given data.</p>
+<ol start="3" type="a">
+<li>Interpret the intercept in the context of the data and the research question. Is the intercept meaningful in this context? Why or why not?</li>
+</ol>
+<p>Ans: The intercept represents the predicted baby weight when the mother’s age is 0. This is not meaningful in this context because mothers cannot realistically be age 0. Therefore, the intercept is not practically interpretable.</p>
+<ol start="4" type="a">
+<li>Interpret the slope in the context of the data and the research question.</li>
+</ol>
+<p>The slope of the regression line is 0.0142. This means that for each additional year of the mother’s age, the baby’s birth weight is expected to increase by about 0.014 ounces on average.</p>
+<p>This suggests a very small positive relationship between mother’s age and baby’s birth weight, meaning older mothers tend to have slightly heavier babies, although the effect is quite minimal.</p>
+</section>
+</section>
+<section id="part-2---parasites" class="level1">
+<h1>Part 2 - Parasites</h1>
+<p>Parasites can cause infectious disease – but not all animals are affected by the same parasites. Some parasites are present in a multitude of species and others are confined to a single host. It is hypothesized that closely related hosts are more likely to share the same parasites. More specifically, it is thought that closely related hosts will live in similar environments and have similar genetic makeup that coincides with optimal conditions for the same parasite to flourish.</p>
+<p>In this part of the lab, we will see how much evolutionary history predicts parasite similarity.</p>
+<p>The dataset comes from an Ecology Letters paper by Cooper at al.&nbsp;(2012) entitled “Phylogenetic host specificity and understanding parasite sharing in primates” located <a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2012.01858.x">here</a>. The goal of the paper was to identify the ability of evolutionary history and ecological traits to characterize parasite host specificity.</p>
+<p>Each row of the data contains two species, <code>species1</code> and <code>species2</code>.</p>
+<p>Subsequent columns describe metrics that compare the species:</p>
+<ul>
+<li><p><code>divergence_time</code>: how many (millions) of years ago the two species diverged. i.e.&nbsp;how many million years ago they were the same species.</p></li>
+<li><p><code>distance</code>: geodesic distance between species geographic range centroids (in kilometers)</p></li>
+<li><p><code>BMdiff</code>: difference in body mass between the two species (in grams)</p></li>
+<li><p><code>precdiff</code>: difference in mean annual precipitation across the two species geographic ranges (mm)</p></li>
+<li><p><code>parsim</code>: a measure of parasite similarity (proportion of parasites shared between species, ranges from 0 to 1.)</p></li>
+</ul>
+<p>The data are available in <code>parasites.csv</code> in your <code>data</code> folder.</p>
+<section id="question-3" class="level2">
+<h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
+<p>Let’s start by reading in the <code>parasites</code> data and examining the relationship between <code>divergence_time</code> and <code>parsim</code>.</p>
+<ol type="a">
+<li>Load the data and save the data frame as <code>parasites</code>.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install packages (run once, then you can comment them out)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"readr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"broom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load dataset</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>parasites <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/parasites.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 595 Columns: 7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): species1, species2
+dbl (5): divergence_time, distance, BMdiff, precdiff, parsim
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Based on the goals of the analysis, what is the response variable?</li>
+</ol>
+<p>The response variable is <code>parsim</code> because the goal is to understand how parasite similarity changes based on divergence time.</p>
+<ol start="3" type="a">
+<li>Visualize the relationship between the two variables.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(parasites, <span class="fu">aes</span>(<span class="at">x =</span> divergence_time, <span class="at">y =</span> parsim)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Parasite Similarity vs. Divergence Time"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divergence Time (millions of years)"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Parasite Similarity"</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="a">
+<li>Use the visualization to describe the relationship between the two variables.</li>
+</ol>
+<p>Ans: The scatterplot shows a clear negative relationship between divergence time and parasite similarity. Species with low divergence time tend to have higher parasite similarity, while species with higher divergence time (around 40–70 million years) mostly show very low similarity values close to zero.</p>
+<p>This indicates that as species become more evolutionarily distant, they are much less likely to share parasites. There is also noticeable variability at lower divergence times, but the overall downward trend is clear.</p>
+</section>
+<section id="question-4" class="level2">
+<h2 class="anchored" data-anchor-id="question-4">Question 4</h2>
+<p>Next, model this relationship.</p>
+<ol type="a">
+<li>Fit the model and write the estimated regression equation.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model_q4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(parsim <span class="sc">~</span> divergence_time, <span class="at">data =</span> parasites)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_q4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term            estimate std.error statistic   p.value
+  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)      0.379    0.0121        31.4 4.59e-128
+2 divergence_time -0.00653  0.000312     -20.9 2.70e- 73</code></pre>
+</div>
+</div>
+<p>The estimated regression equation is</p>
+<p><span class="math display">\[
+\hat{parsim} = 0.3795 - 0.0065(\text{divergence_time})
+\]</span></p>
+<ol start="2" type="a">
+<li>Interpret the slope and the intercept in the context of the data.</li>
+</ol>
+<p>Ans: The intercept is 0.3795, which means that when divergence time is 0 million years, the predicted parasite similarity is 0.3795. This represents the expected parasite similarity for two species that have just diverged.</p>
+<p>The slope is -0.0065, which means that for each additional 1 million years of divergence time, the predicted parasite similarity decreases by about 0.0065 on average.</p>
+<ol start="3" type="a">
+<li>Recreate the visualization from Question 3, this time adding a regression line to the visualization.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(parasites, <span class="fu">aes</span>(<span class="at">x =</span> divergence_time, <span class="at">y =</span> parsim)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Parasite Similarity vs. Divergence Time with Regression Line"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divergence Time (millions of years)"</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Parasite Similarity"</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="a">
+<li>What do you notice about the prediction (regression) line that may be strange, particularly for very large divergence times?</li>
+</ol>
+<p>Ans: A strange feature of the regression line is that for very large divergence times, it can predict parasite similarity values below 0. This is unrealistic because parasite similarity must stay between 0 and 1, so a simple linear model is not ideal for the original response variable.</p>
+</section>
+<section id="question-5" class="level2">
+<h2 class="anchored" data-anchor-id="question-5">Question 5</h2>
+<p>Since <code>parsim</code> takes values between 0 and 1, we want to transform this variable so that it can range between (−∞,+∞). This will be better suited for fitting a regression model (and interpreting predicted values!)</p>
+<ol type="a">
+<li><p>Using mutate, create a new variable <code>transformed_parsim</code> that is calculated as <code>log(parsim/(1-parsim))</code>. Add this variable to your data frame.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>log()</code> in R represents the <strong>nautral log</strong>.</p>
+</div>
+</div></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>parasites <span class="ot">&lt;-</span> parasites <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transformed_parsim =</span> <span class="fu">log</span>(parsim <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> parsim)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>:::</code></pre>
+<ol start="2" type="a">
+<li>Then, visualize the relationship between divergence_time and <code>transformed_parsim</code>. Add a regression line to your visualization.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(parasites, <span class="fu">aes</span>(<span class="at">x =</span> divergence_time, <span class="at">y =</span> transformed_parsim)) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Transformed Parasite Similarity vs. Divergence Time"</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divergence Time (millions of years)"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Transformed Parasite Similarity"</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Write a 1-2 sentence description of what you observe in the visualization.</li>
+</ol>
+<p>Ans: After transforming <code>parsim</code>, the relationship between divergence time and parasite similarity appears more linear compared to the original plot. The data points are more evenly distributed around the regression line, and the downward trend is clearer.</p>
+<p>The transformation removes the restriction of values between 0 and 1, making the data better suited for linear regression.</p>
+</section>
+<section id="question-6" class="level2">
+<h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
+<p><em>Which variable is the strongest individual predictor of parasite similarity between species?</em></p>
+<p>To answer this question, begin by fitting a linear regression model to each pair of variables. Do not report the model outputs in a tidy format but save each one as <code>dt_model</code>, <code>dist_model</code>, <code>BM_model</code>, and <code>prec_model</code>, respectively.</p>
+<ul>
+<li><p><code>divergence_time</code> and <code>transformed_parsim</code></p></li>
+<li><p><code>distance</code> and <code>transformed_parsim</code></p></li>
+<li><p><code>BMdiff</code> and <code>transformed_parsim</code></p></li>
+<li><p><code>precdiff</code> and <code>transformed_parsim</code></p></li>
+</ul>
+<ol type="a">
+<li>Report the slopes for each of these models. Use proper notation.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dt_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> divergence_time, <span class="at">data =</span> parasites)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>dist_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> distance, <span class="at">data =</span> parasites)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>BM_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> BMdiff, <span class="at">data =</span> parasites)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>prec_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(transformed_parsim <span class="sc">~</span> precdiff, <span class="at">data =</span> parasites)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(dt_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    (Intercept) divergence_time 
+     0.36835518     -0.09066296 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(dist_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept)      distance 
+-0.5528947213 -0.0002739886 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(BM_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept)        BMdiff 
+-2.695710e+00 -5.044374e-06 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(prec_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept)     precdiff 
+-2.532269683 -0.006012838 </code></pre>
+</div>
+</div>
+<p>The slopes are</p>
+<p><span class="math display">\[
+\hat{\beta}_1^{(dt)} = -0.0907
+\]</span></p>
+<p><span class="math display">\[
+\hat{\beta}_1^{(dist)} = -0.000274
+\]</span></p>
+<p><span class="math display">\[
+\hat{\beta}_1^{(BM)} = -0.00000504
+\]</span></p>
+<p><span class="math display">\[
+\hat{\beta}_1^{(prec)} = -0.00601
+\]</span></p>
+<ol start="2" type="a">
+<li>To answer the question of interest, would it be useful to compare the slopes in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?</li>
+</ol>
+<p>Ans: No, it would not be useful to compare the slopes directly to determine the strongest predictor. This is because each predictor variable is measured in different units. For example, divergence time is measured in millions of years, distance in kilometers, body mass difference in grams, and precipitation difference in millimeters.</p>
+<p>Since the scales of these variables are very different, the magnitude of the slopes is not directly comparable. A larger or smaller slope does not necessarily indicate a stronger relationship, so comparing slopes alone would be misleading.</p>
+</section>
+<section id="question-7" class="level2">
+<h2 class="anchored" data-anchor-id="question-7">Question 7</h2>
+<p>Now, what if we calculated <span class="math inline">\(R^2\)</span> to help answer our question? To compare the explanatory power of each individual predictor, we will look at <span class="math inline">\(R^2\)</span> between the models. <span class="math inline">\(R^2\)</span> is a measure of how much of the variability in the response variable is explained by the model.</p>
+<p>As you may have guessed from the name <span class="math inline">\(R^2\)</span> can be calculated by squaring the correlation when we have a simple linear regression model. The correlation r takes values -1 to 1, therefore, <span class="math inline">\(R^2\)</span> takes values 0 to 1. Intuitively, if r=1 or −1, then <span class="math inline">\(R^2\)</span>=1, indicating the model is a perfect fit for the data. If r≈0 then <span class="math inline">\(R^2\)</span>≈0, indicating the model is a very bad fit for the data.</p>
+<p>You can calculate <span class="math inline">\(R^2\)</span> using the glance function. For example, you can calculate <span class="math inline">\(R^2\)</span> for <code>dt_model</code> using the code <code>glance(dt_model)$r.squared</code>.</p>
+<ol type="a">
+<li>Calculate and report <span class="math inline">\(R^2\)</span> for each model fit in the previous exercise.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(dt_model)<span class="sc">$</span>r.squared</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5125147</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(dist_model)<span class="sc">$</span>r.squared</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4432029</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(BM_model)<span class="sc">$</span>r.squared</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.003269571</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(prec_model)<span class="sc">$</span>r.squared</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.008611603</code></pre>
+</div>
+</div>
+<p>The <span class="math inline">\(R^2\)</span> values are:</p>
+<ul>
+<li>divergence_time: 0.5125</li>
+<li>distance: 0.4432</li>
+<li>BMdiff: 0.0033</li>
+<li>precdiff: 0.008</li>
+</ul>
+<ol start="2" type="a">
+<li>To answer our question of interest, would it be useful to compare the <span class="math inline">\(R^2\)</span> in each model to choose the variable that is the strongest predictor of parasite similarity? Why or why not?</li>
+</ol>
+<p>Ans: Yes, comparing the <span class="math inline">\(R^2\)</span> values is useful because <span class="math inline">\(R^2\)</span> measures how much of the variation in parasite similarity is explained by each predictor. A higher <span class="math inline">\(R^2\)</span> indicates a stronger explanatory relationship between the predictor and the response variable.</p>
+<p>Based on these values:</p>
+<ul>
+<li>divergence_time: 0.5125<br>
+</li>
+<li>distance: 0.4432<br>
+</li>
+<li>BMdiff: 0.0033<br>
+</li>
+<li>precdiff: 0.0086</li>
+</ul>
+<p><code>divergence_time</code> is the strongest individual predictor of parasite similarity because it has the highest <span class="math inline">\(R^2\)</span>, meaning it explains the largest proportion of variability in the response variable.</p>
+</section>
+</section>
+<section id="part-3---gdp-and-life-expectancy" class="level1">
+<h1>Part 3 - GDP and life expectancy</h1>
+<p>Gapminder is a “fact tank” that uses publicly available world data to produce data visualizations and teaching resources on global development. We will use an excerpt of their data to explore relationships among world health metrics across countries and regions between the years 1952 and 2007. The data set is called <code>gapminder</code>, from the <strong>gapminder</strong> package. A table of variables can be found below.</p>
+<ul>
+<li><p><code>country</code>: The country name</p></li>
+<li><p><code>continent</code>: The continent name</p></li>
+<li><p><code>year</code>: ranges from 1952 to 2007 in increments of 5 years</p></li>
+<li><p><code>lifeExp</code>: life expectancy at birth, in years</p></li>
+<li><p><code>pop</code>: population of country</p></li>
+<li><p><code>gdpPercap</code>: GDP per capita (US$, inflation-adjusted)</p></li>
+</ul>
+<section id="question-8" class="level2">
+<h2 class="anchored" data-anchor-id="question-8">Question 8</h2>
+<ol type="a">
+<li><strong>Data:</strong> For our analysis, we will only be working with data from 2007. Below, filter the data set so only values from the year 2007 are shown. Save this data set as <code>gapminder_07</code> and use it for the remainder of this exercise and the following.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"gapminder"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"broom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.5'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for 2007</span></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>gapminder_07 <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2007</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="a">
+<li><p><strong>Visualization:</strong> We are interested in learning more about GDP, and we’ll start with exploring the relationship between life expectancy and GDP. Create two visualizations:</p>
+<ul>
+<li><p>Scatter plot of <code>gdpPercap</code> vs.&nbsp;<code>lifeExp</code>.</p></li>
+<li><p>Scatter plot of <code>gdpPercap_log</code> vs.&nbsp;<code>lifeExp</code>, where <code>gdpPercap_log</code> is a new variable you add to the data set by taking the natural log of <code>gdpPercap</code>.</p></li>
+</ul>
+<p>First describe the relationship between each pair of the variables. Then, comment on which relationship would be better modeled using a linear model, and explain your reasoning.</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Raw GDP vs life expectancy</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder_07, <span class="fu">aes</span>(<span class="at">x =</span> lifeExp, <span class="at">y =</span> gdpPercap)) <span class="sc">+</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"GDP per Capita vs Life Expectancy (2007)"</span>,</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Life Expectancy"</span>,</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"GDP per Capita"</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log GDP</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>gapminder_07 <span class="ot">&lt;-</span> gapminder_07 <span class="sc">%&gt;%</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdpPercap_log =</span> <span class="fu">log</span>(gdpPercap))</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder_07, <span class="fu">aes</span>(<span class="at">x =</span> lifeExp, <span class="at">y =</span> gdpPercap_log)) <span class="sc">+</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Log GDP per Capita vs Life Expectancy (2007)"</span>,</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Life Expectancy"</span>,</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Log GDP per Capita"</span></span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first plot shows a positive but curved relationship, where GDP increases rapidly at higher life expectancy levels. The second plot (log-transformed GDP) shows a more linear relationship between life expectancy and GDP.</p>
+<p>The log-transformed relationship is better suited for a linear model because it reduces skewness and makes the pattern more linear.</p>
+<ol start="3" type="a">
+<li><p><strong>Model fitting:</strong></p>
+<ul>
+<li>Fit a linear model predicting log gross domestic product from life expectancy. Display the tidy summary.</li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>model_q8 <span class="ot">&lt;-</span> <span class="fu">lm</span>(gdpPercap_log <span class="sc">~</span> lifeExp, <span class="at">data =</span> gapminder_07)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_q8)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)   2.53     0.380        6.65 5.97e-10
+2 lifeExp       0.0909   0.00558     16.3  4.12e-34</code></pre>
+</div>
+</div>
+<ol start="4" type="a">
+<li><p><strong>Model evaluation:</strong></p>
+<ul>
+<li><p>Calculate the R-squared of the model using two methods and confirm that the values match: first method is using <code>glance()</code> and the other method is based on the value of the correlation coefficient between the two variables.</p></li>
+<li><p>Interpret R-squared in the context of the data and the research question.</p></li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 1: using glance</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(model_q8)<span class="sc">$</span>r.squared</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.654449</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 2: using correlation</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(gapminder_07<span class="sc">$</span>lifeExp, gapminder_07<span class="sc">$</span>gdpPercap_log)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.654449</code></pre>
+</div>
+</div>
+<p>Both methods produce the same <span class="math inline">\(R^2\)</span> value, confirming the calculation is correct.</p>
+<p>The <span class="math inline">\(R^2\)</span> value represents the proportion of variation in log GDP per capita that is explained by life expectancy. This means that life expectancy explains a significant portion of the differences in GDP across countries in 2007.</p>
+</section>
+<section id="question-9" class="level2">
+<h2 class="anchored" data-anchor-id="question-9">Question 9</h2>
+<p>Next, we want to examine if the relationship between GDP and life expectancy that we observed in the previous exercise holds across all continents in our data. We’ll continue to work with logged GDP (<code>gdpPercap_log</code>) and data from 2007.</p>
+<ol type="a">
+<li><strong>Justification:</strong> Create a scatter plot of <code>gdpPercap_log</code> vs.&nbsp;<code>lifeExp</code>, where the points are colored by <code>continent</code>. Do you think the trend between <code>gdpPercap_log</code> and <code>lifeExp</code> is different for different continents? Justify your answer with specific features of the plot.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder_07, <span class="fu">aes</span>(<span class="at">x =</span> lifeExp, <span class="at">y =</span> gdpPercap_log, <span class="at">color =</span> continent)) <span class="sc">+</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Log GDP vs Life Expectancy by Continent"</span>,</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Life Expectancy"</span>,</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Log GDP per Capita"</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-5_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Yes, the relationship appears to differ across continents. For example, countries in Europe and the Americas tend to cluster at higher GDP and life expectancy levels, while African countries are more concentrated at lower values. This suggests that continent may influence the relationship.</p>
+<ol start="2" type="a">
+<li><p><strong>Model fitting and interpretation:</strong></p>
+<ul>
+<li><p>Regardless of your answer in part (a), fit an <u>additive model</u> (main effects) that predicts <code>gdpPercap_log</code> from life expectancy and continent (with Africas as the baseline level). Display a tidy summary of the model output.</p></li>
+<li><p>Interpret the <em>intercept</em> of the model, making sure that your interpretation is in the units of the original data (not on log scale).</p></li>
+<li><p>Interpret the <em>slope</em> of the model, making sure that your interpretation is in the units of the original data (not on log scale).</p></li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set Africa as baseline</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>gapminder_07<span class="sc">$</span>continent <span class="ot">&lt;-</span> <span class="fu">relevel</span>(gapminder_07<span class="sc">$</span>continent, <span class="at">ref =</span> <span class="st">"Africa"</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>model_q9 <span class="ot">&lt;-</span> <span class="fu">lm</span>(gdpPercap_log <span class="sc">~</span> lifeExp <span class="sc">+</span> continent, <span class="at">data =</span> gapminder_07)</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_q9)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  term              estimate std.error statistic  p.value
+  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)         3.20     0.499      6.42   2.11e- 9
+2 lifeExp             0.0781   0.00890    8.78   6.14e-15
+3 continentAmericas   0.0660   0.251      0.263  7.93e- 1
+4 continentAsia       0.0103   0.222      0.0463 9.63e- 1
+5 continentEurope     0.715    0.269      2.66   8.87e- 3
+6 continentOceania    0.779    0.601      1.30   1.97e- 1</code></pre>
+</div>
+</div>
+<p><strong>Intercept interpretation:</strong></p>
+<p>The intercept is 3.2048, which represents the predicted log GDP per capita for a country in Africa (baseline category) when life expectancy is 0. Since a life expectancy of 0 is not realistic, the intercept is not meaningful in a practical sense. However, it serves as a baseline for comparison with other continents.</p>
+<p>In original units:</p>
+<p><span class="math display">\[
+GDP = e^{3.2048} \approx 24.65
+\]</span></p>
+<hr>
+<p><strong>Slope interpretation (life expectancy):</strong></p>
+<p>The slope for life expectancy is 0.0781. This means that for each additional year of life expectancy, the log GDP per capita increases by 0.0781.</p>
+<p>In terms of original GDP, this implies that GDP per capita increases by about <strong>8.1%</strong> for each additional year of life expectancy (since <span class="math inline">\(e^{0.0781} \approx 1.081\)</span>).</p>
+<hr>
+<p><strong>Continent interpretation:</strong></p>
+<ul>
+<li><p><strong>Americas (0.0660):</strong> Countries in the Americas have slightly higher log GDP than African countries, but this difference is not statistically significant (p = 0.793).</p></li>
+<li><p><strong>Asia (0.0103):</strong> Countries in Asia have nearly the same GDP as African countries, with no significant difference (p = 0.963).</p></li>
+<li><p><strong>Europe (0.7149):</strong> European countries have significantly higher log GDP than African countries. This is a large and statistically significant difference (p &lt; 0.01).</p></li>
+<li><p><strong>Oceania (0.7794):</strong> Countries in Oceania also have higher GDP than Africa, but this result is not statistically significant due to a large standard error (p = 0.196).</p></li>
+</ul>
+<ol start="3" type="a">
+<li><strong>Prediction:</strong> Predict the GDP of a country in Asia where the average life expectancy is 70 years old.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>pred_log <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_q9, </span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">lifeExp =</span> <span class="dv">70</span>, <span class="at">continent =</span> <span class="st">"Asia"</span>))</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(pred_log)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+5906.738 </code></pre>
+</div>
+</div>
+<p>The predicted GDP per capita for a country in Asia with a life expectancy of 70 years is approximately <strong>$5906.74</strong>.</p>
+<p>This means that, according to the model, a country in Asia with an average life expectancy of 70 years is expected to have a GDP per capita of around $5907. This prediction is based on the relationship between life expectancy, continent, and GDP observed in the 2007 data.</p>
+</section>
+<section id="question-10" class="level2">
+<h2 class="anchored" data-anchor-id="question-10">Question 10</h2>
+<p>Communication is a critical yet often overlooked part of data science. When we engage with our audience and capture their interest, we can ultimately better communicate what we are trying to share.</p>
+<p>Please watch the following video: <a href="https://www.youtube.com/watch?v=Z8t4k0Q8e8Y">Hans Rosling: 200 years in 4 minutes</a>.</p>
+<p>Then, write a paragraph (4-5 sentences) addressing the following:</p>
+<ul>
+<li><p>What did you enjoy about the presentation of data? What did you find interesting</p></li>
+<li><p>Were there any aspects of the presentation that were hard to follow? If so, what?</p></li>
+<li><p>What are your general take-aways from this presentation?</p></li>
+<li><p>What are your general take-aways from how this presentation was given?</p></li>
+</ul>
+<p>ANs: I really enjoyed how the presentation used animated visuals to show changes in life expectancy and income over time, which made the data much more engaging and easier to understand. It was especially interesting to see how all countries started off poor and unhealthy and gradually improved, showing the long-term impact of industrialization, independence, and global development.</p>
+<p>Some parts were slightly hard to follow because the animation moved quickly, especially during periods of major historical events, making it difficult to catch every detail.</p>
+<p>My main takeaway is that there has been significant global progress over the past 200 years, and the gap between wealthy and poorer countries is gradually closing. I also learned that presenting data visually and interactively can make complex information much more accessible and impactful for a wide audience.</p>
+</section>
+</section>
+<section id="wrap-up" class="level1">
+<h1>Wrap-up</h1>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>Once you are finished with the lab, you will submit your final PDF document to Canvas.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before you wrap up the assignment, make sure all of your documents are updated on your GitHub repo. We will be checking these to make sure you have been practicing how to commit and push changes.</p>
+<p>You must turn in a PDF file to the Canvas page by the submission deadline to be considered “on time”.</p>
+</div>
+</div>
+<p>To submit your assignment:</p>
+<ul>
+<li>Go to <a href="http://www.Canvas.com" class="uri">http://www.Canvas.com</a> and click <em>Log in</em> in the top right corner.</li>
+<li>Click <em>School Credentials</em> <span class="math inline">\(\rightarrow\)</span> <em>Duke NetID</em> and log in using your NetID credentials.</li>
+<li>Click on your <em>REN R 213</em> course.</li>
+<li>Click on the assignment, and you’ll be prompted to submit it.</li>
+<li>Mark all the pages associated with question. All the pages of your lab should be associated with at least one question (i.e., should be “checked”).</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Checklist
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Make sure you have:</p>
+<ul>
+<li>attempted all questions</li>
+<li>rendered your Quarto document</li>
+<li>committed and pushed everything to your GitHub repository such that the Git pane in RStudio is empty</li>
+<li>uploaded your PDF to Canvas</li>
+<li>selected pages associated with each question on Canvas</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="grading" class="level2">
+<h2 class="anchored" data-anchor-id="grading">Grading</h2>
+<p>The lab is graded out of a total of 4 points.</p>
+<p>You can earn up to 4 points on each question:</p>
+<ul>
+<li><p>4: Response shows excellent understanding and addresses all or almost all of the rubric items.</p></li>
+<li><p>3: Response shows good understanding and addresses most of the rubric items.</p></li>
+<li><p>2: Response shows understanding and addresses a majority of the rubric items.</p></li>
+<li><p>1: Response shows effort and misses many of the rubric items.</p></li>
+<li><p>0: Response does not show sufficient effort or understanding and/or is largely incomplete.</p></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
